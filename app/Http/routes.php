@@ -17,3 +17,4 @@ $app->get('user/new', 'UserController@newAction');
 $app->post('user/create', 'UserController@createAction');
 $app->get('user/edit/{id}', 'UserController@editAction');
 $app->post('user/update/{id}', 'UserController@updateAction');
+$app->get('user/delete/{id}', 'UserController@deleteAction');

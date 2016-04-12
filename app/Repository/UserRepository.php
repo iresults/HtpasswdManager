@@ -92,6 +92,18 @@ class UserRepository
     }
 
     /**
+     * @param User $user
+     * @return $this
+     */
+    public function remove(User $user)
+    {
+        $this->getUsers();
+        unset($this->users[$user->getUsername()]);
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function persist()

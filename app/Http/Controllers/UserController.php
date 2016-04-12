@@ -39,6 +39,19 @@ class UserController extends Controller
         return view('edit', ['user' => $this->userRepository->getUser($username)]);
     }
 
+    public function deleteAction($username)
+    {
+        $user = $this->userRepository->getUser($username);
+        if (!$user) {
+            throw new \RuntimeException(sprintf('No user named %s found', $username));
+        }
+        $this->userRepository
+            ->remove($user)
+            ->persist();
+
+        return $this->redirectToList();
+    }
+
     public function updateAction(Request $request, $username)
     {
         if ($request->get('username') !== (string)$username) {
@@ -53,7 +66,7 @@ class UserController extends Controller
             ->update($user)
             ->persist();
 
-        return redirect()->route('users');
+        return $this->redirectToList();
     }
 
     public function newAction()
@@ -72,7 +85,7 @@ class UserController extends Controller
             ->add($user)
             ->persist();
 
-        return redirect()->route('users');
+        return $this->redirectToList();
     }
 
     /**
@@ -91,5 +104,15 @@ class UserController extends Controller
         }
 
         return array($username, $password);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function redirectToList()
+    {
+        /** @var \Laravel\Lumen\Http\Redirector $rd */
+        $rd = redirect();
+        return $rd->route('users');
     }
 }
