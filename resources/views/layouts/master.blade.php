@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="/stylesheets/main.css"/>
+    <link rel="stylesheet" href="{{ url('/stylesheets/main.css') }}"/>
 </head>
 <body>
 
@@ -19,13 +19,5 @@
         This is the content.
     @show
 </div>
-
-<script>
-    window.Assetic = {
-        reloadInterval: 2000,
-        monitor: ['js']
-    };
-</script>
-<script src="https://www.rheingold-edelmetall.com/Assetic.js"></script>
 </body>
 </html>

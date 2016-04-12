@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Page Title')
+@section('title', 'Benutzer anzeigen')
 
 @section('content')
     @if($user)

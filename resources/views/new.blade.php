@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'New')
+@section('title', 'Benutzer hinzufügen')
 
 @section('content')
     <form action="{{ url('user/create') }}" method="post">
