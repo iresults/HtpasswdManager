@@ -50,7 +50,7 @@ class UserRepository
     /**
      * @return User[]
      */
-    public function getUsers(): array
+    public function getUsers()
     {
         if ($this->users === null) {
             $this->loadUsers();
@@ -67,7 +67,7 @@ class UserRepository
     {
         $users = $this->getUsers();
 
-        return $users[$username] ?? null;
+        return isset($users[$username]) ? $users[$username] : null;
     }
 
     /**

@@ -23,10 +23,13 @@ class User implements \JsonSerializable
      * @param string $password
      * @param bool   $encrypted
      */
-    public function __construct(string $username, string $password, bool $encrypted = false)
+    public function __construct($username, $password, $encrypted = false)
     {
+        $this->assertString($username);
+        $this->assertString($password);
+
         $this->username = $username;
-        if ($encrypted) {
+        if ((bool)$encrypted) {
             $this->encryptedPassword = $password;
         } else {
             $this->setPassword($password);
@@ -36,7 +39,7 @@ class User implements \JsonSerializable
     /**
      * @return string
      */
-    public function getUsername():string
+    public function getUsername()
     {
         return $this->username;
     }
@@ -44,15 +47,16 @@ class User implements \JsonSerializable
     /**
      * @param string $username
      */
-    public function setUsername(string $username)
+    public function setUsername($username)
     {
+        $this->assertString($username);
         $this->username = $username;
     }
 
     /**
      * @return string
      */
-    public function getEncryptedPassword():string
+    public function getEncryptedPassword()
     {
         return $this->encryptedPassword;
     }
@@ -60,16 +64,18 @@ class User implements \JsonSerializable
     /**
      * @param string $encryptedPassword
      */
-    public function setEncryptedPassword(string $encryptedPassword)
+    public function setEncryptedPassword($encryptedPassword)
     {
+        $this->assertString($encryptedPassword);
         $this->encryptedPassword = $encryptedPassword;
     }
 
     /**
      * @param string $clearTextPassword
      */
-    public function setPassword(string $clearTextPassword)
+    public function setPassword($clearTextPassword)
     {
+        $this->assertString($clearTextPassword);
         $this->encryptedPassword = crypt($clearTextPassword, base64_encode($clearTextPassword));
     }
 
@@ -81,11 +87,23 @@ class User implements \JsonSerializable
         if (!$this->username) {
             throw new InvalidUserDataException('Username not defined');
         }
-        if (!ctype_alnum($this->username) ){
+        if (!ctype_alnum($this->username)) {
             throw new InvalidUserDataException('Username contains invalid data');
         }
         if (!$this->encryptedPassword) {
             throw new InvalidUserDataException('Password not defined');
+        }
+    }
+
+    private function assertString($input)
+    {
+        if (!is_string($input)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected argument to be of type string %s given',
+                    is_object($input) ? get_class($input) : gettype($input)
+                )
+            );
         }
     }
 
@@ -96,5 +114,4 @@ class User implements \JsonSerializable
             'password' => $this->getEncryptedPassword(),
         ];
     }
-
 }

@@ -11,9 +11,9 @@
 |
 */
 
-$app->get('/', 'UserController@listAll');
-$app->get('users', ['as' => 'users', 'uses' => 'UserController@listAll']);
-$app->get('user/new', 'UserController@new');
-$app->post('user/create', 'UserController@create');
-$app->get('user/edit/{id}', 'UserController@edit');
-$app->post('user/update/{id}', 'UserController@update');
+$app->get('/', 'UserController@listAction');
+$app->get('users', ['as' => 'users', 'uses' => 'UserController@listAction']);
+$app->get('user/new', 'UserController@newAction');
+$app->post('user/create', 'UserController@createAction');
+$app->get('user/edit/{id}', 'UserController@editAction');
+$app->post('user/update/{id}', 'UserController@updateAction');

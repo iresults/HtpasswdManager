@@ -24,22 +24,22 @@ class UserController extends Controller
         $this->userRepository = $userProvider;
     }
 
-    public function listAll()
+    public function listAction()
     {
         return view('list', ['users' => $this->userRepository->getUsers()]);
     }
 
-    public function show($username)
+    public function showAction($username)
     {
         return view('show', ['user' => $this->userRepository->getUser($username)]);
     }
 
-    public function edit($username)
+    public function editAction($username)
     {
         return view('edit', ['user' => $this->userRepository->getUser($username)]);
     }
 
-    public function update(Request $request, $username)
+    public function updateAction(Request $request, $username)
     {
         if ($request->get('username') !== (string)$username) {
             throw new InvalidUserDataException('Username mismatch in request');
@@ -56,12 +56,12 @@ class UserController extends Controller
         return redirect()->route('users');
     }
 
-    public function new()
+    public function newAction()
     {
         return view('new');
     }
 
-    public function create(Request $request)
+    public function createAction(Request $request)
     {
         list($username, $password) = $this->getUsernameAndPasswordFromRequest($request);
 
