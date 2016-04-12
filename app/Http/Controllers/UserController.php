@@ -7,6 +7,8 @@ use App\Http\Redirector;
 use App\Repository\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Application;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserController extends Controller
 {
@@ -25,23 +27,30 @@ class UserController extends Controller
         $this->userRepository = $userProvider;
     }
 
-    public function listAction()
+    public function listAction(Request $request)
     {
+        $this->checkAccess($request);
+
         return view('list', ['users' => $this->userRepository->getUsers()]);
     }
 
-    public function showAction($username)
+    public function showAction(Request $request, $username)
     {
+        $this->checkAccess($request);
+
         return view('show', ['user' => $this->userRepository->getUser($username)]);
     }
 
-    public function editAction($username)
+    public function editAction(Request $request, $username)
     {
+        $this->checkAccess($request);
+
         return view('edit', ['user' => $this->userRepository->getUser($username)]);
     }
 
-    public function deleteAction($username)
+    public function deleteAction(Request $request, $username)
     {
+        $this->checkAccess($request);
         $user = $this->userRepository->getUser($username);
         if (!$user) {
             throw new \RuntimeException(sprintf('No user named %s found', $username));
@@ -55,6 +64,7 @@ class UserController extends Controller
 
     public function updateAction(Request $request, $username)
     {
+        $this->checkAccess($request);
         if ($request->get('username') !== (string)$username) {
             throw new InvalidUserDataException('Username mismatch in request');
         }
@@ -70,13 +80,16 @@ class UserController extends Controller
         return $this->redirectToList();
     }
 
-    public function newAction()
+    public function newAction(Request $request)
     {
+        $this->checkAccess($request);
+
         return view('new');
     }
 
     public function createAction(Request $request)
     {
+        $this->checkAccess($request);
         list($username, $password) = $this->getUsernameAndPasswordFromRequest($request);
 
         $user = new User($username, $password);
@@ -115,5 +128,27 @@ class UserController extends Controller
         $rd = new Redirector(app());
 
         return $rd->route('users');
+    }
+
+    private function checkAccess(Request $request)
+    {
+        /** @var Application $app */
+        $app = app();
+        if (!$app->environment('local')) {
+
+            $currentUsername = $request->getUser();
+            if (!$currentUsername) {
+                throw new AccessDeniedHttpException();
+            }
+
+            if (!in_array($currentUsername, $this->getAdminUsers())) {
+                throw new AccessDeniedHttpException();
+            }
+        }
+    }
+
+    private function getAdminUsers()
+    {
+        return array_filter(explode(',', env('ADMIN_USERS')));
     }
 }
