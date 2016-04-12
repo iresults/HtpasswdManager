@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\InvalidUserDataException;
+use App\Http\Redirector;
 use App\Repository\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -111,8 +112,8 @@ class UserController extends Controller
      */
     private function redirectToList()
     {
-        /** @var \Laravel\Lumen\Http\Redirector $rd */
-        $rd = redirect();
+        $rd = new Redirector(app());
+
         return $rd->route('users');
     }
 }

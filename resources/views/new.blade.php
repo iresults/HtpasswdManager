@@ -3,7 +3,7 @@
 @section('title', 'Benutzer hinzufügen')
 
 @section('content')
-    <form action="{{ url('user/create') }}" method="post">
+    <form action="{{ ir_url('user/create') }}" method="post">
         <div class="title">
             <h1>Benutzer hinzufügen</h1>
         </div>

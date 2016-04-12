@@ -8,7 +8,7 @@
 <nav class="navbar navbar-dark bg-inverse navbar-fixed-top">
     <ul class="nav navbar-nav">
         <li class="nav-item active">
-            <a class="nav-link" href="{{ url('users') }}">Benutzerliste</a>
+            <a class="nav-link" href="{{ ir_url('users') }}">Benutzerliste</a>
         </li>
     </ul>
 </nav>
