@@ -6,6 +6,7 @@
     "laravel",
     "lumen"
   ],
+  "minimum-stability": "dev",
   "license": "MIT",
   "type": "project",
   "require": {
@@ -17,7 +18,8 @@
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
-    "phpunit/phpunit": "~4.0"
+    "phpunit/phpunit": "~4.0",
+    "cundd/test-flight": "*"
   },
   "autoload": {
     "psr-4": {

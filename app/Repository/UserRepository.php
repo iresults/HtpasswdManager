@@ -48,6 +48,10 @@ class UserRepository
 
 
     /**
+     * @example
+     *  $userRepo = new \App\Repository\UserRepository();
+     *  assert(is_array($userRepo->getUsers()));
+     *
      * @return User[]
      */
     public function getUsers()
@@ -121,7 +125,12 @@ class UserRepository
 
     private function getUsersFilePath()
     {
-        return self::BASE_PATH.'/'.env('PASSWORD_FILE');
+        $passwordFile = env('PASSWORD_FILE');
+        if ($passwordFile === null) {
+           $passwordFile = 'tests/resources/test-htpasswd-file'; 
+        }
+
+        return self::BASE_PATH.'/'.$passwordFile;
     }
 
     private function loadUsers()
