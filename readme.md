@@ -8,6 +8,7 @@ A simple GUI to manage the users and passwords in .htpasswd files. Built with [L
 git clone https://github.com/iresults/HtpasswdManager.git;
 cd HtpasswdManager;
 composer install;
+ln -s vendor/fortawesome/font-awesome/fonts public/fonts;
 ```
 
 Set the path to the .htpasswd file and the names of the admin users in `.env`:
